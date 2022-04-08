@@ -1,17 +1,13 @@
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import models.*;
 import logics.*;
+
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        session.close();
-//        HibernateUtil.shutdown();
-
         SessionFactory sessionFactory = new Configuration()
                 .addAnnotatedClass(ExpenseCategory.class)
                 .addAnnotatedClass(IncomeCategory.class)
@@ -23,20 +19,22 @@ public class Main {
                 .buildSessionFactory();
 
         boolean isWork = true;
-        while(isWork){
-            System.out.println("Введите 1 для работы с категориями расходов");
-            System.out.println("Введите 2 для работы с типами расходов");
-            System.out.println("Введите 3 для работы с категориями доходов");
-            System.out.println("Введите 4 для работы с типами доходов");
-            System.out.println("Введите 5 для работы с членом семьи");
-            System.out.println("Введите 6 для работы с расходами");
-            System.out.println("Введите 7 для работы с доходами");
+        while (isWork) {
+            System.out.println("Выберите сущность для взаимодейтсвия: ");
+            System.out.println("1 — категории расходов");
+            System.out.println("2 — типы расходов");
+            System.out.println("3 — категории доходов");
+            System.out.println("4 — типы доходов");
+            System.out.println("5 — члены семьи");
+            System.out.println("6 — расходы");
+            System.out.println("7 — доходы\n");
             System.out.println("Введите 8 для выхода");
+            System.out.println("Введите 9 для вывода расходов с именами");
 
             Scanner scanner = new Scanner(System.in);
             int i = scanner.nextInt();
 
-            switch (i){
+            switch (i) {
                 case 1:
                     ExpenseCategoryLogic expenseCategoryLogic = new ExpenseCategoryLogic();
                     expenseCategoryLogic.work(sessionFactory);
@@ -68,9 +66,12 @@ public class Main {
                 case 8:
                     isWork = false;
                     break;
+                case 9:
+                    ExpensesWithNameLogic expensesWithNameLogic = new ExpensesWithNameLogic();
+                    expensesWithNameLogic.work(sessionFactory);
+                    break;
             }
         }
-
         sessionFactory.close();
     }
 }
